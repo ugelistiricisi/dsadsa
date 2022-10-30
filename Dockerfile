@@ -1,5 +1,5 @@
-# Must use a Cuda version 11+
-FROM pytorch/pytorch:1.11.0-cuda11.3-cudnn8-runtime
+# Must use a Cuda version 10+
+FROM pytorch/pytorch:1.10.0-cuda11.3-cudnn8-runtime
 
 WORKDIR /
 
@@ -13,6 +13,7 @@ RUN git clone https://github.com/yoyo-nb/Thin-Plate-Spline-Motion-Model
 WORKDIR "/Thin-Plate-Spline-Motion-Model"
 
 # copy requirements.txt
+RUN rm requirements.txt
 COPY requirements.txt requirements.txt
 
 # Install python packages
