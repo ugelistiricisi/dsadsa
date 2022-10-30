@@ -6,12 +6,14 @@ WORKDIR /
 # Install git
 RUN apt-get update && apt-get install -y git
 
-
 # Clone thin plate splines
 RUN git clone https://github.com/yoyo-nb/Thin-Plate-Spline-Motion-Model
 
 # Change into the repo dir
 WORKDIR "/Thin-Plate-Spline-Motion-Model"
+
+# copy requirements.txt
+COPY requirements.txt requirements.txt
 
 # Install python packages
 RUN pip3 install --upgrade pip
@@ -23,12 +25,8 @@ ADD server.py .
 
 # Add your model weight files 
 # (in this case we have a python script)
-#ADD download.py .
-#RUN python3 download.py
-
-#COPY the model weights
-RUN mkdir checkpoints
-COPY custom.pth.tar checkpoints/custom.pth.tar
+ADD download_checkpoints.sh .
+RUN bash download_checkpoints.sh
 
 # # Add your custom app code, init() and inference()
 ADD app.py .
