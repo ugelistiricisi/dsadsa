@@ -12,17 +12,18 @@ RUN git clone https://github.com/yoyo-nb/Thin-Plate-Spline-Motion-Model
 # Change into the repo dir
 WORKDIR "/Thin-Plate-Spline-Motion-Model"
 
-# copy requirements.txt
+# copy corrected requirements.txt
 RUN rm requirements.txt
 COPY requirements.txt requirements.txt
 
 # Install python packages
 RUN pip3 install --upgrade pip
-#ADD requirements.txt requirements.txt
-# RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt
 #NOTE: I was not able to get these to install with the correct versions from requirements.txt
 RUN pip3 install torch===1.10.0+cu113 -f https://download.pytorch.org/whl/torch_stable.html
 RUN pip3 install torchvision===0.11.0+cu113 -f https://download.pytorch.org/whl/torch_stable.html
+
+
 # We add the banana boilerplate here
 ADD server.py .
 

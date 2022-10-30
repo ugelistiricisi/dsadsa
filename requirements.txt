@@ -20,6 +20,7 @@ scikit-image==0.18.3
 scikit-learn==1.0
 scipy==1.7.1
 six==1.16.0
+#NOTE: ignore installing torch from requirements.txt, did not work
 #torch==1.10.0+cu113
 #torchvision==0.11.0+cu113
 #torch===1.10.0+cu113 -f https://download.pytorch.org/whl/torch_stable.html
