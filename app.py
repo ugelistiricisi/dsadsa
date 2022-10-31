@@ -39,9 +39,6 @@ def init():
     creates the globals that will be used every call
     '''
     # CUDA_VISIBLE_DEVICES=0 python demo.py --config config/vox-256.yaml --checkpoint checkpoints/vox.pth.tar --source_image ./source.jpg --driving_video ./driving.mp4
-    global model 
-
-    # model = TODO
     global inpainting, kp_detector, dense_motion_network, avd_network
     inpainting, kp_detector, dense_motion_network, avd_network = demo.load_checkpoints(config_path = config_path, checkpoint_path = checkpoint_path, device = device)
     
@@ -52,13 +49,13 @@ def inference(all_inputs:dict) -> dict:
     takes in dict created from request json, outputs dict
     to be wrapped up into a response json
     '''
-    global model
+    global inpainting, kp_detector, dense_motion_network, avd_network
     assert 'image' in all_inputs, 'TODO: what to do if image is not there?'
     image = all_inputs.get("image", None)
     image = decodeBase64Image(image,'image')
 
     image = np.array(image)
-    global inpainting, kp_detector, dense_motion_network, avd_network
+    
     with torch.inference_mode():
         #TODO: tempfilename for result video?
         video_base64 = wrapper_for_animate(image,
