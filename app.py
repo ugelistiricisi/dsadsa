@@ -42,9 +42,6 @@ def init():
     global inpainting, kp_detector, dense_motion_network, avd_network
     inpainting, kp_detector, dense_motion_network, avd_network = demo.load_checkpoints(config_path = config_path, checkpoint_path = checkpoint_path, device = device)
     
-def make_error_response(message):
-    return 
-
 def inference(all_inputs:dict) -> dict:
     print('bounceback')
     return all_inputs
