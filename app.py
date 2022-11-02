@@ -14,8 +14,8 @@ import numpy as np
 ######################################################
 # all settings, exposed here for visibility
 
-config_path = 'config/custom-256.yaml'
-checkpoint_path = 'checkpoints/custom.pth.tar'
+config_path = 'config/vox-256.yaml'
+checkpoint_path = 'checkpoints/vox.pth.tar'
 device = 'cuda'
 # driving_video='./assets/driving.mp4'
 img_shape = (256,256)
