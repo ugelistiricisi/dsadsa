@@ -11,7 +11,7 @@ RUN git clone https://github.com/yoyo-nb/Thin-Plate-Spline-Motion-Model
 
 # Change into the repo dir
 WORKDIR "/Thin-Plate-Spline-Motion-Model"
-
+ADD videos videos
 # copy corrected requirements.txt
 RUN rm requirements.txt
 COPY requirements.txt requirements.txt
