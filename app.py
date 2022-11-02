@@ -63,7 +63,7 @@ def inference(all_inputs:dict) -> dict:
     if 'video' not in all_inputs:
         return {'result':-1,'message':'video absent in request'}
     driving_video = all_inputs.get("video",None)
-    driving_video = os.path.join('assets',driving_video)
+    driving_video = os.path.join('./videos',driving_video)
     if not os.path.exists(driving_video):
         return {'result':-1,'message':'video not recognized'}
     #==================================================================
