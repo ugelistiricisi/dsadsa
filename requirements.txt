@@ -27,3 +27,4 @@ six==1.16.0
 #torchvision===0.11.0+cu113 -f https://download.pytorch.org/whl/torch_stable.html
 tqdm==4.62.3
 gdown
+sanic==22.6.2
