@@ -1,7 +1,7 @@
 from PIL import Image
 import base64 
 from io import BytesIO
-import demo
+import demo # this will be available from the Thin-Plate-Spline repo
 import imageio
 ######################################################
 # imports for animate
