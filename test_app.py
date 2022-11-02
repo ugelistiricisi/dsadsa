@@ -28,9 +28,22 @@ if 'bounce back experiment' and False:
     
 if 'run dl code' and True:
     app.init()
-    response = app.inference({'image':image_base64})
-    video_base64 = response['result']
-    with open('result.mp4','wb') as f:
-        f.write(base64.b64decode(video_base64))
-    # image = np.array(image)
-    # skimage.io.imsave('bounce_back_image.png',image)
+    if 'correct':
+        response = app.inference({'image':image_base64,'video':'driving.mp4'})
+        video_base64 = response['result']
+        with open('result.mp4','wb') as f:
+            f.write(base64.b64decode(video_base64))
+        # image = np.array(image)
+        # skimage.io.imsave('bounce_back_image.png',image)
+    if 'missing image':
+        response = app.inference({'video':'driving.mp4'})
+        print('missing image')
+        print(response)
+    elif 'missing video':
+        response = app.inference({'image':image_base64})
+        print('missing video')
+        print(response) 
+    elif 'wrong video':
+        response = app.inference({'image':image_base64,'video':'driving0.mp4'})
+        print('wrong video')
+        print(response)         

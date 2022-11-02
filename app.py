@@ -17,7 +17,7 @@ import numpy as np
 config_path = 'config/custom-256.yaml'
 checkpoint_path = 'checkpoints/custom.pth.tar'
 device = 'cuda'
-driving_video='./assets/driving.mp4'
+# driving_video='./assets/driving.mp4'
 img_shape = (256,256)
 find_best_frame = False
 # choose from ['standard', 'relative', 'avd']
@@ -42,6 +42,9 @@ def init():
     global inpainting, kp_detector, dense_motion_network, avd_network
     inpainting, kp_detector, dense_motion_network, avd_network = demo.load_checkpoints(config_path = config_path, checkpoint_path = checkpoint_path, device = device)
     
+def make_error_response(message):
+    return 
+
 def inference(all_inputs:dict) -> dict:
     print('bounceback')
     return all_inputs
@@ -50,14 +53,21 @@ def inference(all_inputs:dict) -> dict:
     to be wrapped up into a response json
     '''
     global inpainting, kp_detector, dense_motion_network, avd_network
-    assert 'image' in all_inputs, 'TODO: what to do if image is not there?'
+    #==================================================================
+    if 'image' not in all_inputs:
+        return {'result':-1,'message':'image absent in request'}
     image = all_inputs.get("image", None)
     image = decodeBase64Image(image,'image')
-
     image = np.array(image)
-    
+    #==================================================================
+    if 'video' not in all_inputs:
+        return {'result':-1,'message':'video absent in request'}
+    driving_video = all_inputs.get("video",None)
+    driving_video = os.path.join('assets',driving_video)
+    if not os.path.exists(driving_video):
+        return {'result':-1,'message':'video not recognized'}
+    #==================================================================
     with torch.inference_mode():
-        #TODO: tempfilename for result video?
         video_base64 = wrapper_for_animate(image,
                         driving_video=driving_video,
                         device='cuda',
@@ -71,7 +81,7 @@ def inference(all_inputs:dict) -> dict:
                         # result_video='./result.mp4',
                         )
     #TODO: or storage to google bucket and send back the link?
-    return {'result':video_base64}
+    return {'result':video_base64,'message':'success'}
 #######################################################################
 # wrapper for animate
 #######################################################################
@@ -101,11 +111,10 @@ def wrapper_for_animate(source_image,
     
 
     device = torch.device(device)
-    
     source_image = resize(source_image, img_shape)[..., :3]
     driving_video = [resize(frame, img_shape)[..., :3] for frame in driving_video]
-
- 
+    #===============================================
+    # copied from demo.py in Thin-Plate-Spline ...
     if find_best_frame:
         i = demo.find_best_frame(source_image, driving_video, False)
         print ("Best frame: " + str(i))
@@ -116,8 +125,8 @@ def wrapper_for_animate(source_image,
         predictions = predictions_backward[::-1] + predictions_forward[1:]
     else:
         predictions = demo.make_animation(source_image, driving_video, inpainting, kp_detector, dense_motion_network, avd_network, device = device, mode = mode)
-
-    # with tempfile.TemporaryFile(mode='w+b') as f:
+    #===============================================
+    # HACK: save result as temporary file,reread and binarize
     import tempfile
     temp_name = next(tempfile._get_candidate_names())
     temp_name = temp_name +'.mp4'
@@ -127,4 +136,5 @@ def wrapper_for_animate(source_image,
     with open(temp_name, "rb") as videoFile:
         video_base64 =  base64.b64encode(videoFile.read()).decode('utf-8')
     os.system(f'rm {temp_name}')
+    #===============================================
     return video_base64
