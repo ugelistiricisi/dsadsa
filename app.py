@@ -43,8 +43,8 @@ def init():
     inpainting, kp_detector, dense_motion_network, avd_network = demo.load_checkpoints(config_path = config_path, checkpoint_path = checkpoint_path, device = device)
     
 def inference(all_inputs:dict) -> dict:
-    print('bounceback')
-    return all_inputs
+    # print('bounceback')
+    # return all_inputs
     '''
     takes in dict created from request json, outputs dict
     to be wrapped up into a response json
