@@ -21,7 +21,7 @@ device = 'cuda'
 img_shape = (256,256)
 find_best_frame = False
 # choose from ['standard', 'relative', 'avd']
-mode = 'standard'
+mode = 'relative'
 ######################################################
 TODO = False
 def decodeBase64Image(imageStr: str, name: str) -> Image:
